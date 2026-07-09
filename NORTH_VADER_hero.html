@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NORTH VADER｜X運用代行</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Noto+Sans+JP:wght@500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --line:#3E7BD6;
+    --line-soft:#7FB4F5;
+    --amber:#E8A33D;
+    --paper:#F3F7FC;
+    --muted:#9FB3C8;
+    --tan:#D9C9A8;
+  }
+  *{ box-sizing:border-box; }
+  body{
+    margin:0;
+    background:radial-gradient(ellipse 90% 70% at 50% 0%, rgba(28,79,168,0.35), transparent 60%), linear-gradient(135deg,#050914,#020509);
+    min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    padding:40px 16px;
+    font-family:'Noto Sans JP', sans-serif;
+  }
+  .stage{
+    width:100%; max-width:1500px;
+    position:relative;
+  }
+  .stage::before{
+    content:"";
+    display:block;
+    padding-top:33.3333%; /* 500 / 1500 */
+  }
+  svg{
+    position:absolute; top:0; left:0;
+    width:100%; height:100%;
+    display:block;
+    overflow:visible;
+  }
+
+  /* animations removed for maximum cross-browser reliability */
+
+  /* card hover (inner group only — outer group keeps the position transform) */
+  .card{ transition:transform .2s ease; transform-box:fill-box; transform-origin:center; cursor:default; }
+  .card:hover{ transform:translateY(-3px); }
+  .card:hover .stroke{ stroke:var(--line-soft); }
+
+  .badge{ transition:transform .15s ease; transform-box:fill-box; transform-origin:center; }
+  .badge:hover{ transform:scale(1.04); }
+
+  .clickable{ cursor:pointer; }
+  .clickable:hover .stroke{ stroke:var(--amber); }
+
+  /* modal */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(2,5,9,0.75);
+    display:flex; align-items:center; justify-content:center;
+    padding:24px; z-index:50;
+    opacity:0; pointer-events:none;
+    transition:opacity .25s ease;
+  }
+  .modal-overlay.open{ opacity:1; pointer-events:auto; }
+  .modal-box{
+    background:linear-gradient(180deg, rgba(20,28,40,0.98), rgba(8,12,20,0.98));
+    border:1px solid rgba(127,180,245,0.3);
+    border-radius:16px;
+    max-width:720px; width:100%;
+    max-height:85vh; overflow-y:auto;
+    padding:32px;
+    transform:translateY(16px);
+    transition:transform .25s ease;
+  }
+  .modal-overlay.open .modal-box{ transform:translateY(0); }
+  .modal-head{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px; }
+  .modal-head h2{ font-size:22px; font-weight:900; color:var(--paper); margin:0; }
+  .modal-close{
+    background:none; border:1px solid rgba(159,179,200,0.4); color:var(--muted);
+    width:30px; height:30px; border-radius:50%; cursor:pointer; font-size:15px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .modal-close:hover{ color:var(--paper); border-color:var(--line-soft); }
+  .modal-sub{ font-size:13.5px; color:var(--muted); margin-bottom:24px; }
+
+  .work-card{
+    display:block; text-decoration:none;
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(127,180,245,0.18);
+    border-radius:12px;
+    padding:18px 20px;
+    margin-bottom:14px;
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .work-card:last-child{ margin-bottom:0; }
+  .work-card:hover{ border-color:var(--line-soft); transform:translateX(3px); }
+  .work-tag{
+    display:inline-block; font-size:11px; color:var(--muted);
+    border:1px solid rgba(159,179,200,0.4); border-radius:16px; padding:2px 10px; margin-bottom:10px;
+  }
+  .work-card h3{ font-size:17px; color:var(--paper); margin:0 0 6px; font-weight:800; }
+  .work-card p{ font-size:13px; color:var(--tan); line-height:1.75; margin:0 0 10px; }
+  .work-link{ font-size:12.5px; font-weight:700; color:var(--paper); }
+  .work-card:hover .work-link{ color:var(--amber); }
+
+  /* animations removed entirely for maximum cross-browser reliability */
+</style>
+</head>
+<body>
+
+<div class="stage">
+<svg viewBox="0 0 1500 500" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <radialGradient id="bg1" cx="50%" cy="0%" r="70%">
+    <stop offset="0%" stop-color="#1C4FA8" stop-opacity="0.4"/>
+    <stop offset="100%" stop-color="#1C4FA8" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="basebg" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#050914"/>
+    <stop offset="100%" stop-color="#020509"/>
+  </linearGradient>
+  <radialGradient id="sphere" cx="38%" cy="32%" r="75%">
+    <stop offset="0%" stop-color="#BFE0FF"/>
+    <stop offset="35%" stop-color="#4FA0F0"/>
+    <stop offset="75%" stop-color="#1257B8"/>
+    <stop offset="100%" stop-color="#0A2E66"/>
+  </radialGradient>
+  <radialGradient id="sphereglow" cx="50%" cy="50%" r="50%">
+    <stop offset="55%" stop-color="#2E7DE0" stop-opacity="0.55"/>
+    <stop offset="100%" stop-color="#2E7DE0" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="boxfill" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#081226"/>
+    <stop offset="100%" stop-color="#050B18"/>
+  </linearGradient>
+</defs>
+
+<rect width="1500" height="500" fill="url(#basebg)"/>
+<rect width="1500" height="500" fill="url(#bg1)"/>
+
+<g fill="#7FB4F5">
+  <circle cx="120" cy="30" r="1.3" opacity="0.6"/>
+  <circle cx="1380" cy="30" r="1.3" opacity="0.6"/>
+  <circle cx="260" cy="60" r="1" opacity="0.4"/>
+  <circle cx="1240" cy="60" r="1" opacity="0.4"/>
+</g>
+
+<text  x="750" y="32" text-anchor="middle" font-family="Noto Sans CJK JP" font-weight="900" font-size="24" fill="#F3F7FC">運用次第で、育つアカウントに。</text>
+
+<g  fill="none" stroke="#3E7BD6" stroke-width="4" stroke-linecap="round">
+  <path d="M 620 113 C 655 113 655 165 690 165"/>
+  <path d="M 620 225 C 655 225 655 225 682 225"/>
+  <path d="M 620 337 C 655 337 655 285 690 285"/>
+</g>
+<g  fill="#3E7BD6">
+  <path d="M 690 165 l -13 -7 l 0 14 z"/>
+  <path d="M 682 225 l -13 -7 l 0 14 z"/>
+  <path d="M 690 285 l -13 -7 l 0 14 z"/>
+</g>
+
+<g  fill="none" stroke="#3E7BD6" stroke-width="4" stroke-linecap="round">
+  <path d="M 810 165 C 845 165 845 113 880 113"/>
+  <path d="M 818 225 C 850 225 850 225 880 225"/>
+  <path d="M 810 285 C 845 285 845 337 880 337"/>
+</g>
+<g  fill="#3E7BD6">
+  <path d="M 880 113 l -13 -7 l 0 14 z"/>
+  <path d="M 880 225 l -13 -7 l 0 14 z"/>
+  <path d="M 880 337 l -13 -7 l 0 14 z"/>
+</g>
+
+<g transform="translate(750,225)" >
+  <circle class="sphere-glow" cx="0" cy="0" r="98" fill="url(#sphereglow)"/>
+  <g class="sphere-core">
+    <circle cx="0" cy="0" r="70" fill="url(#sphere)"/>
+    <circle cx="0" cy="0" r="70" fill="none" stroke="#CFE8FF" stroke-width="1.2" opacity="0.6"/>
+    <ellipse cx="0" cy="0" rx="70" ry="24" fill="none" stroke="#EAF5FF" stroke-width="1.1" opacity="0.5" transform="rotate(-18)"/>
+    <ellipse cx="0" cy="0" rx="57" ry="18" fill="none" stroke="#EAF5FF" stroke-width="0.8" opacity="0.32" transform="rotate(24)"/>
+    <g fill="#FFFFFF">
+      <circle cx="-21" cy="-31" r="1.5" opacity="0.9"/>
+      <circle cx="16" cy="-39" r="1.2" opacity="0.8"/>
+      <circle cx="37" cy="-10" r="1.5" opacity="0.9"/>
+      <circle cx="-37" cy="5" r="1.2" opacity="0.7"/>
+      <circle cx="-10" cy="31" r="1.3" opacity="0.85"/>
+      <circle cx="25" cy="28" r="1.2" opacity="0.75"/>
+    </g>
+  </g>
+</g>
+<text  x="750" y="322" text-anchor="middle" font-size="17" font-family="'Barlow Condensed', sans-serif" font-weight="800" fill="#F3F7FC">NORTH VADER</text>
+<text  x="750" y="340" text-anchor="middle" font-family="Noto Sans CJK JP" font-weight="500" font-size="12" fill="#9FB3C8">実務AIパートナーズ</text>
+
+<!-- Left column -->
+<g transform="translate(200,75)"><g class="card">
+  <rect class="stroke" width="420" height="76" rx="10" fill="url(#boxfill)" stroke="#E8A33D" stroke-width="2.2"/>
+  <rect width="420" height="76" rx="10" fill="none" stroke="#F5C979" stroke-width="1" opacity="0.35"/>
+  <text x="22" y="32" font-weight="900" font-size="22" fill="#F3F7FC">X運用代行</text>
+  <text x="22" y="57" font-weight="500" font-size="14" fill="#D9C9A8">戦略設計・コンテンツ制作・運用まで一貫対応</text>
+</g></g>
+
+<g transform="translate(200,187)"><g class="card">
+  <rect class="stroke" width="420" height="76" rx="10" fill="url(#boxfill)" stroke="#3E7BD6" stroke-width="1.6"/>
+  <rect width="420" height="76" rx="10" fill="none" stroke="#7FB4F5" stroke-width="1" opacity="0.25"/>
+  <text x="22" y="32" font-weight="800" font-size="20" fill="#F3F7FC">運用サポート</text>
+  <text x="22" y="57" font-weight="500" font-size="14" fill="#AFC9E8">競合調査・ターゲット設定・分析/レポーティング</text>
+</g></g>
+
+<g transform="translate(200,299)"><g class="card  clickable" id="htmlCard" onclick="document.getElementById('worksModal').classList.add('open')" style="cursor:pointer;">
+  <rect class="stroke" width="420" height="76" rx="10" fill="url(#boxfill)" stroke="#3E7BD6" stroke-width="1.6"/>
+  <rect width="420" height="76" rx="10" fill="none" stroke="#7FB4F5" stroke-width="1" opacity="0.25"/>
+  <text x="22" y="32" font-weight="800" font-size="20" fill="#F3F7FC">HTML制作</text>
+  <text x="22" y="57" font-weight="500" font-size="12.5" fill="#AFC9E8">LP制作・コーポレートサイト・バナー制作</text>
+  <text x="398" y="46" text-anchor="end" font-weight="700" font-size="11" fill="#E8A33D">実績を見る ›</text>
+</g></g>
+
+<!-- Right column -->
+<g transform="translate(880,75)"><g class="card">
+  <rect class="stroke" width="420" height="76" rx="10" fill="url(#boxfill)" stroke="#3E7BD6" stroke-width="1.6"/>
+  <rect width="420" height="76" rx="10" fill="none" stroke="#7FB4F5" stroke-width="1" opacity="0.25"/>
+  <g transform="translate(18,18)" stroke="#BFE0FF" stroke-width="2.2" fill="none" stroke-linejoin="round">
+    <path d="M3 1 H25 L34 10 V40 H3 Z"/>
+    <path d="M25 1 V10 H34"/>
+    <line x1="9" y1="20" x2="28" y2="20"/>
+    <line x1="9" y1="27" x2="28" y2="27"/>
+  </g>
+  <text x="64" y="33" font-weight="800" font-size="19" fill="#F3F7FC">AIライティング</text>
+  <text x="64" y="57" font-weight="500" font-size="13" fill="#AFC9E8">SEO記事・ブログ・SNS投稿文</text>
+</g></g>
+
+<g transform="translate(880,187)"><g class="card">
+  <rect class="stroke" width="420" height="76" rx="10" fill="url(#boxfill)" stroke="#3E7BD6" stroke-width="1.6"/>
+  <rect width="420" height="76" rx="10" fill="none" stroke="#7FB4F5" stroke-width="1" opacity="0.25"/>
+  <g transform="translate(36,38)" stroke="#BFE0FF" stroke-width="2.2" fill="none">
+    <circle r="12"/>
+    <circle r="4" fill="#BFE0FF" stroke="none"/>
+    <g stroke-width="3">
+      <line x1="0" y1="-18" x2="0" y2="-12"/>
+      <line x1="0" y1="18" x2="0" y2="12"/>
+      <line x1="-18" y1="0" x2="-12" y2="0"/>
+      <line x1="18" y1="0" x2="12" y2="0"/>
+      <line x1="-12" y1="-12" x2="-8" y2="-8"/>
+      <line x1="12" y1="12" x2="8" y2="8"/>
+      <line x1="-12" y1="12" x2="-8" y2="8"/>
+      <line x1="12" y1="-12" x2="8" y2="-8"/>
+    </g>
+  </g>
+  <text x="64" y="33" font-weight="800" font-size="19" fill="#F3F7FC">業務効率化</text>
+  <text x="64" y="57" font-weight="500" font-size="13" fill="#AFC9E8">ChatGPT導入・自動化・マニュアル整備</text>
+</g></g>
+
+<g transform="translate(880,299)"><g class="card">
+  <rect class="stroke" width="420" height="76" rx="10" fill="url(#boxfill)" stroke="#3E7BD6" stroke-width="1.6"/>
+  <rect width="420" height="76" rx="10" fill="none" stroke="#7FB4F5" stroke-width="1" opacity="0.25"/>
+  <g transform="translate(18,18)" stroke="#BFE0FF" stroke-width="2.2" fill="none" stroke-linejoin="round">
+    <rect x="1" y="1" width="38" height="38" rx="6"/>
+    <path d="M15 12 L28 20 L15 28 Z" fill="#BFE0FF" stroke="none"/>
+  </g>
+  <text x="64" y="33" font-weight="800" font-size="19" fill="#F3F7FC">コンテンツ制作</text>
+  <text x="64" y="57" font-weight="500" font-size="13" fill="#AFC9E8">ショート動画・PR動画・画像制作</text>
+</g></g>
+
+<!-- CTA: centered, outside all boxes -->
+<g  transform="translate(750,432)">
+  <g class="badge">
+    <rect x="-125" y="-21" width="250" height="42" rx="21" fill="#1C63D6"/>
+    <text x="0" y="6" text-anchor="middle" font-weight="700" font-size="18" fill="#F3F7FC">無料相談受付中</text>
+  </g>
+</g>
+<text  x="750" y="478" text-anchor="middle" font-weight="500" font-size="16" fill="#D9C9A8">X運用代行は運用初月お試し０円実施中</text>
+
+</svg>
+</div>
+
+<div class="modal-overlay" id="worksModal" onclick="if(event.target===this) this.classList.remove('open')">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2>HTML制作実績</h2>
+      <button class="modal-close" id="worksClose" onclick="document.getElementById('worksModal').classList.remove('open')" aria-label="閉じる">✕</button>
+    </div>
+    <p class="modal-sub">制作事例の一部をご紹介します。クリックすると別タブでサイトが開きます。</p>
+
+    <a class="work-card" href="birch-syrup.html" target="_blank" rel="noopener">
+      <span class="work-tag">EC・ブランドサイト</span>
+      <h3>BIRCH — 白樺シロップ</h3>
+      <p>札幌発の白樺シロップブランドのイメージサイト。素材の物語や製法へのこだわりを、余白を活かした落ち着いたトーンで伝える構成にしています。</p>
+      <span class="work-link">サイトを見る →</span>
+    </a>
+
+    <a class="work-card" href="housing-heiwa.html" target="_blank" rel="noopener">
+      <span class="work-tag">不動産・コーポレートサイト</span>
+      <h3>ハウジング平和の森</h3>
+      <p>札幌の不動産会社様のコーポレートサイト。会社の想い・おすすめ物件・アクセスまでを一つにまとめ、信頼感を重視した和のトーンでデザインしました。</p>
+      <span class="work-link">サイトを見る →</span>
+    </a>
+
+    <a class="work-card" href="geimori-cafe.html" target="_blank" rel="noopener">
+      <span class="work-tag">店舗・飲食サイト</span>
+      <h3>芸森珈琲館</h3>
+      <p>森の中の隠れ家カフェをイメージした店舗サイト。こだわりの一杯や空間の雰囲気が伝わるよう、写真と余白を活かした落ち着いたレイアウトにしています。</p>
+      <span class="work-link">サイトを見る →</span>
+    </a>
+  </div>
+</div>
+
+<script>
+  const htmlCard = document.getElementById('htmlCard');
+  const modal = document.getElementById('worksModal');
+  const closeBtn = document.getElementById('worksClose');
+
+  function openModal(){ modal.classList.add('open'); }
+  function closeModal(){ modal.classList.remove('open'); }
+
+  htmlCard.addEventListener('click', openModal);
+  closeBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+</script>
+
+</body>
+</html>
