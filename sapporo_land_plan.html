@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>札幌南区石山 土地活用構想</title>
+  <style>
+    :root {
+      --bg: #060c14;
+      --surface: #0d1b2a;
+      --card: #112233;
+      --accent: #00d4ff;
+      --accent2: #7b2fff;
+      --gold: #f0c040;
+      --text: #e0eaf8;
+      --muted: #6a8aaa;
+      --border: rgba(0,212,255,0.15);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,100,200,0.25) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 50% at 80% 80%, rgba(123,47,255,0.18) 0%, transparent 70%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='0.8' fill='rgba(255,255,255,0.08)'/%3E%3C/svg%3E");
+      animation: bgPulse 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes bgPulse {
+      from { opacity: 0.8; }
+      to   { opacity: 1; }
+    }
+
+    .grid-lines {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    .badge {
+      display: inline-block;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      padding: 4px 16px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+      position: relative;
+      backdrop-filter: blur(4px);
+    }
+
+    .hero h1 {
+      font-size: clamp(2.2rem, 6vw, 4.5rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      position: relative;
+    }
+
+    .hero h1 .accent { color: var(--accent); }
+    .hero h1 .gold   { color: var(--gold); }
+
+    .hero-sub {
+      margin-top: 20px;
+      font-size: clamp(0.95rem, 2.2vw, 1.2rem);
+      color: var(--muted);
+      max-width: 600px;
+      position: relative;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 50px;
+      flex-wrap: wrap;
+      justify-content: center;
+      position: relative;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-num {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 4px;
+      letter-spacing: 0.05em;
+    }
+
+    .hero-arrow {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 30px;
+      height: 30px;
+      border-right: 2px solid var(--accent);
+      border-bottom: 2px solid var(--accent);
+      transform: translateX(-50%) rotate(45deg);
+      animation: arrowBounce 1.5s ease-in-out infinite;
+      opacity: 0.6;
+    }
+
+    @keyframes arrowBounce {
+      0%, 100% { bottom: 36px; }
+      50%       { bottom: 26px; }
+    }
+
+    /* ── SECTION ── */
+    section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 80px 24px;
+    }
+
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(1.6rem, 4vw, 2.6rem);
+      font-weight: 800;
+      margin-bottom: 48px;
+      line-height: 1.2;
+    }
+
+    /* ── OVERVIEW STRIP ── */
+    .overview-strip {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 48px 24px;
+    }
+
+    .overview-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 32px;
+    }
+
+    .overview-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .oi-icon {
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+    }
+
+    .oi-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    .oi-value {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    /* ── CHALLENGE BANNER ── */
+    .challenge-banner {
+      background: linear-gradient(135deg, rgba(123,47,255,0.15), rgba(0,212,255,0.08));
+      border: 1px solid rgba(123,47,255,0.3);
+      border-radius: 16px;
+      padding: 32px 36px;
+      margin-bottom: 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .challenge-banner::before {
+      content: '!';
+      position: absolute;
+      right: 30px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 8rem;
+      font-weight: 900;
+      color: rgba(123,47,255,0.08);
+      line-height: 1;
+    }
+
+    .challenge-banner h3 {
+      font-size: 1.1rem;
+      color: var(--accent2);
+      margin-bottom: 10px;
+      letter-spacing: 0.05em;
+    }
+
+    .challenge-banner p {
+      color: var(--muted);
+      max-width: 680px;
+      font-size: 0.95rem;
+    }
+
+    /* ── OPPORTUNITY CARDS ── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+      cursor: default;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: var(--accent);
+      box-shadow: 0 20px 60px rgba(0,212,255,0.1);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--card-accent, linear-gradient(90deg, var(--accent), var(--accent2)));
+      border-radius: 16px 16px 0 0;
+    }
+
+    .card.gold::before { background: linear-gradient(90deg, var(--gold), #ff8c40); }
+    .card.green::before { background: linear-gradient(90deg, #00e676, #69f0ae); }
+    .card.purple::before { background: linear-gradient(90deg, #b040ff, #7b2fff); }
+    .card.teal::before  { background: linear-gradient(90deg, #00bcd4, #00acc1); }
+    .card.red::before   { background: linear-gradient(90deg, #ff5252, #ff1744); }
+
+    .card-rank {
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .card-icon {
+      font-size: 2.2rem;
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .card-desc {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-bottom: 18px;
+      line-height: 1.65;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      background: rgba(0,212,255,0.08);
+      border: 1px solid rgba(0,212,255,0.2);
+      color: var(--accent);
+      font-size: 0.7rem;
+      padding: 3px 10px;
+      border-radius: 100px;
+      letter-spacing: 0.04em;
+    }
+
+    .tag.gold   { background: rgba(240,192,64,0.1); border-color: rgba(240,192,64,0.3); color: var(--gold); }
+    .tag.green  { background: rgba(0,230,118,0.08); border-color: rgba(0,230,118,0.25); color: #00e676; }
+    .tag.purple { background: rgba(176,64,255,0.08); border-color: rgba(176,64,255,0.25); color: #b040ff; }
+
+    /* ── KEY VALUE SECTION ── */
+    .value-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+      margin-top: 48px;
+    }
+
+    .value-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px 20px;
+      text-align: center;
+      transition: border-color 0.2s;
+    }
+
+    .value-item:hover { border-color: var(--accent); }
+
+    .value-icon { font-size: 1.8rem; margin-bottom: 10px; }
+    .value-name { font-size: 0.95rem; font-weight: 700; }
+    .value-note { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
+
+    /* ── STEP ROADMAP ── */
+    .roadmap {
+      position: relative;
+      padding-left: 36px;
+    }
+
+    .roadmap::before {
+      content: '';
+      position: absolute;
+      left: 12px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent), var(--accent2));
+      opacity: 0.4;
+    }
+
+    .step {
+      position: relative;
+      margin-bottom: 40px;
+    }
+
+    .step::before {
+      content: '';
+      position: absolute;
+      left: -30px;
+      top: 8px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px var(--accent);
+    }
+
+    .step-num {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .step-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .step-body {
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    .step-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .step-item {
+      background: rgba(0,212,255,0.07);
+      border: 1px solid rgba(0,212,255,0.18);
+      border-radius: 8px;
+      padding: 4px 12px;
+      font-size: 0.78rem;
+      color: var(--text);
+    }
+
+    /* ── CTA STRIP ── */
+    .cta-strip {
+      background: linear-gradient(135deg, rgba(0,212,255,0.08), rgba(123,47,255,0.08));
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 64px 24px;
+      text-align: center;
+    }
+
+    .cta-inner { max-width: 640px; margin: 0 auto; }
+
+    .cta-strip h2 {
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .cta-strip p {
+      color: var(--muted);
+      margin-bottom: 36px;
+      font-size: 0.95rem;
+    }
+
+    .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    .btn {
+      padding: 14px 32px;
+      border-radius: 100px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      letter-spacing: 0.04em;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn:hover { transform: translateY(-3px); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+      box-shadow: 0 8px 30px rgba(0,212,255,0.25);
+    }
+
+    .btn-primary:hover { box-shadow: 0 12px 40px rgba(0,212,255,0.4); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid rgba(0,212,255,0.4);
+    }
+
+    .btn-outline:hover { background: rgba(0,212,255,0.08); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      text-align: center;
+    }
+
+    footer p { font-size: 0.8rem; color: var(--muted); }
+
+    /* ── REVEAL ANIMATION ── */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin: 0 24px;
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 640px) {
+      .hero {
+        min-height: 100svh;
+        padding: 80px 20px 60px;
+      }
+      .hero h1 { font-size: 2.2rem; }
+      .hero-stats { gap: 20px; }
+      .stat-num { font-size: 1.8rem; }
+      .stat-label { font-size: 0.72rem; }
+
+      .overview-inner {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+      .oi-value { font-size: 0.88rem; }
+
+      section { padding: 52px 18px; }
+
+      .challenge-banner { padding: 24px 20px; }
+      .challenge-banner::before { display: none; }
+
+      .cards-grid { grid-template-columns: 1fr; }
+      .card { padding: 22px 18px; }
+
+      .value-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .value-item { padding: 16px 12px; }
+      .value-icon { font-size: 1.4rem; }
+      .value-name { font-size: 0.82rem; }
+      .value-note { font-size: 0.68rem; }
+
+      .roadmap { padding-left: 28px; }
+      .step-items { gap: 6px; }
+      .step-item { font-size: 0.74rem; padding: 4px 10px; }
+
+      .cta-strip { padding: 44px 18px; }
+      .cta-buttons { flex-direction: column; align-items: center; }
+      .btn { width: 100%; max-width: 300px; text-align: center; padding: 16px 24px; }
+
+      .section-title { font-size: 1.5rem; margin-bottom: 32px; }
+    }
+
+    @media (max-width: 400px) {
+      .overview-inner { grid-template-columns: 1fr; }
+      .value-grid { grid-template-columns: 1fr 1fr; }
+      .hero h1 { font-size: 1.9rem; }
+    }
+
+    /* safe area for iPhone notch/home indicator */
+    @supports (padding: max(0px)) {
+      body {
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+      }
+      footer {
+        padding-bottom: max(32px, env(safe-area-inset-bottom));
+      }
+    }
+
+    /* tap highlight off on mobile */
+    a, button { -webkit-tap-highlight-color: transparent; }
+
+    /* ── PRINT / PDF ── */
+    @media print {
+      @page {
+        size: A4;
+        margin: 16mm 14mm 16mm 14mm;
+      }
+
+      /* reveal をすべて表示 */
+      .reveal { opacity: 1 !important; transform: none !important; }
+
+      /* アニメーション停止 */
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+
+      /* ダーク背景を維持 */
+      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+      /* 途中で切れさせない要素 */
+      .card,
+      .step,
+      .overview-item,
+      .value-item,
+      .challenge-banner,
+      .cta-strip,
+      footer              { break-inside: avoid; }
+
+      /* セクション見出しと中身を切り離さない */
+      .section-label,
+      .section-title      { break-after: avoid; }
+
+      /* 孤立行を減らす */
+      p, li               { orphans: 3; widows: 3; }
+
+      /* ヒーローは1ページ目に */
+      .hero { min-height: 0; padding: 60px 24px 40px; break-after: avoid; }
+      .hero-arrow { display: none; }
+
+      /* overviewはヒーローと同ページ → 次で改ページ */
+      .overview-strip { break-before: avoid; break-after: page; }
+
+      /* LAND VALUE セクションは新ページから */
+      section:nth-of-type(2) { break-before: page; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="grid-lines"></div>
+
+  <div class="badge">LAND UTILIZATION CONCEPT 2025</div>
+
+  <h1>
+    <span class="gold">33,000坪</span> の<br />
+    <span class="accent">可能性</span>を<br />
+    解き放つ
+  </h1>
+
+  <p class="hero-sub">
+    札幌市南区石山 ／ 市街化調整区域 ／ 山林<br />
+    社会インフラ × 自然環境 × 長期価値創造
+  </p>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">33,000</div>
+      <div class="stat-label">坪（約 109,000㎡）</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">5+</div>
+      <div class="stat-label">活用候補領域</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">∞</div>
+      <div class="stat-label">長期的ポテンシャル</div>
+    </div>
+  </div>
+
+  <div class="hero-arrow"></div>
+</div>
+
+<!-- ── OVERVIEW STRIP ── -->
+<div class="overview-strip">
+  <div class="overview-inner">
+    <div class="overview-item reveal">
+      <div class="oi-icon">📍</div>
+      <div>
+        <div class="oi-label">所在地</div>
+        <div class="oi-value">札幌市 南区 石山</div>
+      </div>
+    </div>
+    <div class="overview-item reveal">
+      <div class="oi-icon">🌲</div>
+      <div>
+        <div class="oi-label">地目 / 規模</div>
+        <div class="oi-value">山林 ／ 約33,000坪</div>
+      </div>
+    </div>
+    <div class="overview-item reveal">
+      <div class="oi-icon">🏛</div>
+      <div>
+        <div class="oi-label">所有主体</div>
+        <div class="oi-value">法人（長期保有）</div>
+      </div>
+    </div>
+    <div class="overview-item reveal">
+      <div class="oi-icon">⚖️</div>
+      <div>
+        <div class="oi-label">用途区域</div>
+        <div class="oi-value">市街化調整区域</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CHALLENGE ── -->
+<section>
+  <div class="challenge-banner reveal">
+    <h3>課題 ── なぜ難しいのか</h3>
+    <p>
+      市街化調整区域は「住宅地化・一般的な商業開発」が原則不可。
+      しかし近年、<strong>エネルギー・防災・データインフラ・環境価値</strong> の領域では
+      行政も例外的に開発を認める方向へ転換しつつある。
+      普通の不動産開発ではなく、<strong>社会インフラ系の土地利用</strong>へ発想を変えることが突破口となる。
+    </p>
+  </div>
+
+  <div class="section-label">OPPORTUNITIES</div>
+  <div class="section-title reveal">5つの有望活用領域</div>
+
+  <div class="cards-grid">
+
+    <div class="card gold reveal">
+      <div class="card-rank">PRIORITY ★★★ ── 最有力</div>
+      <span class="card-icon">🔋</span>
+      <div class="card-title">系統用蓄電池基地</div>
+      <div class="card-desc">
+        北海道では再エネ増加による電力余剰・出力制御が深刻化。
+        系統安定化のための大型蓄電池需要が急増している。
+        山林の平坦部を活用した蓄電池設置は、市街化調整区域でも
+        インフラ施設として許可が得やすい。
+        近隣変電所・特高線との接続可否が価値を左右する。
+      </div>
+      <div class="card-tags">
+        <span class="tag gold">再エネ連携</span>
+        <span class="tag gold">インフラ特例</span>
+        <span class="tag gold">収益安定</span>
+      </div>
+    </div>
+
+    <div class="card purple reveal">
+      <div class="card-rank">PRIORITY ★★★ ── 政策追い風</div>
+      <span class="card-icon">🖥️</span>
+      <div class="card-title">エッジ・データセンター</div>
+      <div class="card-desc">
+        経済産業省が「市街化調整区域でのデータセンター建設を可能に」する
+        方針を打ち出している。北海道の冷涼気候・土地コストの低さ・
+        東京リスク分散需要が重なり、国内外企業が立地を探している。
+        巨大施設ではなく小型分散型（AI推論・地域バックアップ等）から着手可能。
+      </div>
+      <div class="card-tags">
+        <span class="tag purple">AI需要</span>
+        <span class="tag purple">省電力冷却</span>
+        <span class="tag purple">政策後押し</span>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <div class="card-rank">PRIORITY ★★ ── 公益×収益</div>
+      <span class="card-icon">🛡️</span>
+      <div class="card-title">防災インフラ複合基地</div>
+      <div class="card-desc">
+        蓄電池・非常用発電・通信バックアップ・ドローン基地・
+        災害備蓄・EV充電を複合的に組み合わせる構想。
+        「公益性」が認められると行政許可が通りやすくなる。
+      </div>
+      <div class="card-tags">
+        <span class="tag">公益認定</span>
+        <span class="tag">行政連携</span>
+        <span class="tag">複合収益</span>
+      </div>
+    </div>
+
+    <div class="card teal reveal">
+      <div class="card-rank">PRIORITY ★★ ── 実証需要が高い</div>
+      <span class="card-icon">🚁</span>
+      <div class="card-title">ドローン実証フィールド</div>
+      <div class="card-desc">
+        レベル4飛行解禁・無人物流・林業DX・測量・点検など
+        ドローン活用領域が急拡大中。山林地形は逆に多様な
+        実証シナリオに対応でき、障害物の少ない広大な空域が強み。
+        北海道の広大な自然環境は他地域に真似できないアドバンテージ。
+      </div>
+      <div class="card-tags">
+        <span class="tag">Level 4対応</span>
+        <span class="tag">物流実証</span>
+        <span class="tag">林業DX</span>
+      </div>
+    </div>
+
+    <div class="card green reveal">
+      <div class="card-rank">PRIORITY ★★ ── 山林直結の独自事業</div>
+      <span class="card-icon">🌳</span>
+      <div class="card-title">白樺樹液の採取・事業化</div>
+      <div class="card-desc">
+        白樺の樹液は春先（3〜4月）に採取でき、飲料・化粧品原料・
+        健康食品として近年需要が高まっている。
+        北海道の山林という立地を直接活かせる数少ない独自事業。
+        採取後の樹液を飲料・スキンケア等に加工・販売することで
+        ブランド化が可能。
+      </div>
+      <div class="card-tags">
+        <span class="tag green">山林直活用</span>
+        <span class="tag green">飲料・化粧品原料</span>
+        <span class="tag green">ブランド化</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── LAND VALUE ── -->
+<section>
+  <div class="section-label">LAND VALUE</div>
+  <div class="section-title reveal">この土地が持つ<span style="color:var(--accent)">本当の価値</span></div>
+  <p class="reveal" style="color:var(--muted);max-width:680px;margin-bottom:0;">
+    企業・投資家が土地を見るとき、「広さ」ではなくこれらの要素を評価する。
+    石山の土地はその多くを潜在的に備えている。
+  </p>
+
+  <div class="value-grid">
+    <div class="value-item reveal">
+      <div class="value-icon">⚡</div>
+      <div class="value-name">電力インフラ</div>
+      <div class="value-note">変電所・特高線距離が価値を決める</div>
+    </div>
+    <div class="value-item reveal">
+      <div class="value-icon">💧</div>
+      <div class="value-name">水資源</div>
+      <div class="value-note">DC冷却・農業・防火に直結</div>
+    </div>
+    <div class="value-item reveal">
+      <div class="value-icon">🌡️</div>
+      <div class="value-name">冷涼気候</div>
+      <div class="value-note">年間冷却コストを大幅削減</div>
+    </div>
+    <div class="value-item reveal">
+      <div class="value-icon">🛡️</div>
+      <div class="value-name">災害耐性</div>
+      <div class="value-note">東京集中リスクの分散先として注目</div>
+    </div>
+    <div class="value-item reveal">
+      <div class="value-icon">🔇</div>
+      <div class="value-name">騒音許容</div>
+      <div class="value-note">大型設備・ドローン運用が可能</div>
+    </div>
+    <div class="value-item reveal">
+      <div class="value-icon">🔒</div>
+      <div class="value-name">隔離性・セキュリティ</div>
+      <div class="value-note">DC・エネルギー施設に適した環境</div>
+    </div>
+    <div class="value-item reveal">
+      <div class="value-icon">🚗</div>
+      <div class="value-name">幹線アクセス</div>
+      <div class="value-note">札幌市街地への近接性</div>
+    </div>
+    <div class="value-item reveal">
+      <div class="value-icon">🌲</div>
+      <div class="value-name">森林・環境価値</div>
+      <div class="value-note">カーボンクレジット・ESGに活用可能</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── ROADMAP ── -->
+<section>
+  <div class="section-label">ROADMAP</div>
+  <div class="section-title reveal">段階的に価値を上げる<span style="color:var(--accent)">3ステップ</span></div>
+
+  <div class="roadmap">
+
+    <div class="step reveal">
+      <div class="step-num">STEP 01 ── 最優先</div>
+      <div class="step-title">ポテンシャル調査・資料化</div>
+      <div class="step-body">「この土地で何ができるか」から「どの業界が欲しがる土地か」へ。<br />
+      事業者向け1枚資料を作成し、企業ヒアリングを加速させる。</div>
+      <div class="step-items">
+        <span class="step-item">📡 変電所・特高線距離</span>
+        <span class="step-item">💧 水量・光回線</span>
+        <span class="step-item">🗺️ 地形・平坦部測量</span>
+        <span class="step-item">📋 森林法・保安林確認</span>
+        <span class="step-item">🏔️ 土砂災害区域確認</span>
+        <span class="step-item">🛣️ 接道・搬入経路</span>
+      </div>
+    </div>
+
+    <div class="step reveal">
+      <div class="step-num">STEP 02 ── 行政・企業ヒアリング</div>
+      <div class="step-title">行政相談 × 企業ヒアリング並行実施</div>
+      <div class="step-body">
+        札幌市・北海道庁への開発相談と並行し、蓄電池事業者・
+        データセンター企業・ドローン実証企業へポテンシャル資料を提示。
+        複数社から関心を引き出し、条件を比較検討する。
+      </div>
+      <div class="step-items">
+        <span class="step-item">🏛️ 市・道への事前相談</span>
+        <span class="step-item">🔋 蓄電池事業者 接触</span>
+        <span class="step-item">🖥️ DC事業者 打診</span>
+        <span class="step-item">🚁 ドローン企業 接触</span>
+      </div>
+    </div>
+
+    <div class="step reveal">
+      <div class="step-num">STEP 03 ── 価値最大化</div>
+      <div class="step-title">企業誘致 または 段階的事業化</div>
+      <div class="step-body">
+        「自社で全て運営する」よりも「土地価値を上げて企業誘致」が現実的。
+        長期保有を前提に、複数の収益モデルを並列・段階的に展開する。
+        カーボンクレジットは建設不要で先行着手可能。
+      </div>
+      <div class="step-items">
+        <span class="step-item">📈 長期賃貸モデル</span>
+        <span class="step-item">🤝 合弁スキーム</span>
+        <span class="step-item">🌿 クレジット先行</span>
+        <span class="step-item">🏗️ 段階的開発</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<div class="cta-strip">
+  <div class="cta-inner">
+    <h2>次のアクションは<span style="color:var(--accent)">「土地調査」</span>から</h2>
+    <p>
+      どれだけ広くても、電力接続・地形・法規制が事業可否を左右する。<br />
+      まず「ポテンシャル資料」を整備することが、企業誘致への最短経路。
+    </p>
+    <div class="cta-buttons">
+      <a href="#" class="btn btn-primary">調査項目チェックリストを確認</a>
+      <a href="#" class="btn btn-outline">活用モデル比較を見る</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <p>札幌市南区石山 土地活用構想 ／ 内部検討資料 ／ 2025年版</p>
+</footer>
+
+<script>
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Counter animation for hero stats
+  function animateCount(el, target, suffix = '') {
+    let current = 0;
+    const step = target / 60;
+    const timer = setInterval(() => {
+      current += step;
+      if (current >= target) { current = target; clearInterval(timer); }
+      el.textContent = Math.floor(current).toLocaleString() + suffix;
+    }, 16);
+  }
+
+  const statNums = document.querySelectorAll('.stat-num');
+  setTimeout(() => {
+    animateCount(statNums[0], 33000, '');
+    animateCount(statNums[1], 5, '+');
+  }, 400);
+</script>
+</body>
+</html>
